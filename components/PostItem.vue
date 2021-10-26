@@ -11,7 +11,7 @@
     </div>
     <div class="post-right">
   <label class="checkbox">
-    <input type="checkbox" checked="true">
+    <input type="checkbox" :checked="isRead">
     Read
   </label>
 </div>
@@ -38,31 +38,36 @@ export default {
         date: {
             type : Date,
             required: true
+        },
+        isRead: {
+          type: Boolean,
+          required: false
         }
     }
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .post {
     margin-bottom: 20px;
     padding: 5px;
     border-bottom: 2px solid transparent;
     display: flex;
     flex-direction: row;
-    &-footer {
+}
+    .post-footer {
       font-style: italic;
     }
-    &-content {
+    .post-content {
       flex: 1;
     }
-    &-right {
+    .post-right {
       float: right;
       justify-content: flex-end;
       align-self: center;
     }
-    &:hover {
+    .post:hover {
       border-bottom: 2px solid #e8e8e8;
     }
-  }
+  
 </style>

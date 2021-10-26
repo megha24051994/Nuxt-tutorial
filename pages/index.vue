@@ -15,7 +15,7 @@
                 <h1>Newest Posts</h1>
                 <hr>
               </div>
-              <PostItem v-for="post in posts" :key="post._id" :title="post.title" :subtitle ="post.subtitle" :date="post.createdAt"/>
+              <PostItem v-for="post in posts" :key="post._id" :title="post.title" :subtitle ="post.subtitle" :date="post.createdAt" :isRead="post.isRead"/>
             </div>
             <!-- end of post -->
           </div>
@@ -24,32 +24,52 @@
       </div>
     </div>
   </div>
+  
+    <!-- <form>
+      <input type="text" v-model="form.title">
+       <input type="text" v-model="form.subtitle">
+    </form>
+    {{isFormValid}} -->
 </div>
 </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { fetchPostsAPI } from '../store/post'
 
 export default Vue.extend({
   data() {
     return {
-      posts: [
-        {
-          _id: '1',
-          title: 'My First Post',
-          subtitle: 'My First Subtitle',
-          createdAt: new Date()
-        },
-        {
-          _id: '2',
-          title: 'My Second Post',
-          subtitle: 'My Second Subtitle',
-          createdAt: new Date()
-        }
-      ]
+        // form: {
+        //        title : "Some title",
+        //        subtitle: "Some subtitle"
+        //    }
     }
-  }
+  },
+  // async asyncData() {
+  //   const posts = await fetchPostsAPI()
+  //   return { posts }
+  // },
+  // mounted() {
+  //   this.$store.dispatch('post/fetchPosts')
+  // },
+  fetch({store}) {
+    if(store.getters['post/hasEmptyItem'])
+    return store.dispatch('post/fetchPosts')
+  },
+   computed: {
+      posts() {
+        return this.$store.state.post.items
+      }
+   },
+    // isFormValid() {
+    //   if(this.form.title) {
+    //     return true
+    //   }
+    //   return false
+    // }
+  
 
 })
 </script>
