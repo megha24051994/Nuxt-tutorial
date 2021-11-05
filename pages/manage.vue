@@ -8,9 +8,9 @@
     <nav class="navbar has-shadow">
       <div class="container">
         <div class="navbar-brand">
-          <a class="navbar-item" href="../">
+          <!-- <a class="navbar-item" href="../">
           <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox">
-          </a>
+          </a> -->
           <div class="navbar-burger burger"
                aria-label="menu"
                aria-expanded="false"
@@ -25,17 +25,11 @@
     </nav>
     <div class="columns mail-app">
       <aside class="column is-2 aside hero">
-        <div>
-          <div class="compose has-text-centered">
-            <Modal />
-          </div>
-          <div class="main">
-          </div>
-        </div>
+            <post-create />
       </aside>
       <div class="column is-4 messages hero is-fullheight" id="message-feed">
         <div class="inbox-messages" id="inbox-messages">
-          <div class="card" v-for="item in posts" :key="item._id">
+          <div class="card" v-for="item in posts" :key="item._id" @click="activatePost(item)">
             <div class="card-content">
               <div class="msg-header">
                 <span class="msg-from"><small>From Filip Jerga</small></span>
@@ -52,20 +46,9 @@
           </div>
         </div>
       </div>
-      <div class="column is-6 message hero is-fullheight is-hidden" id="message-pane">
+      <div class="column is-6 message hero is-fullheight" id="message-pane">
         <div class="box message-preview">
-          <div class="top">
-            <div class="avatar">
-              <img src="https://placehold.it/128x128">
-            </div>
-            <div class="address">
-              <div class="name">John Smith</div>
-              <div class="email">someone@gmail.com</div>
-            </div>
-            <hr>
-            <div class="content">
-            </div>
-          </div>
+          <post-manage :postData = "activePost"/>
         </div>
       </div>
     </div>
@@ -91,14 +74,13 @@
 
 <script>
 import { mapState } from 'vuex'
-import  Modal  from '../components/shared/Modal'
 
 export default {
      fetch({store}) {
     return store.dispatch('post/fetchPosts')
   },
   components : {
-      Modal
+      
   },
    computed: {
        ...mapState({
@@ -107,8 +89,13 @@ export default {
    },
    data() {
        return {
-         
+         activePost: {}
        }
+   },
+   methods : {
+     activatePost(post) {
+       this.activePost = post
+     }
    }
 }
 </script>
