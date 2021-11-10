@@ -28,7 +28,7 @@
             <post-create />
       </aside>
       <div class="column is-4 messages hero is-fullheight" id="message-feed">
-        <div class="inbox-messages" id="inbox-messages">
+        <div v-if="posts && posts.length > 0" class="inbox-messages" id="inbox-messages">
           <div class="card" v-for="item in posts" :key="item._id" @click="activatePost(item)">
             <div class="card-content">
               <div class="msg-header">
@@ -45,9 +45,13 @@
             </div>
           </div>
         </div>
+        <div class="inbox-messages no-posts-title" v-else>
+            There are no posts :(
+        </div>
       </div>
       <div class="column is-6 message hero is-fullheight" id="message-pane">
         <div class="box message-preview">
+          <button @click= "deletePost(activePost._id)" class="button is-danger delete-button">Delete</button>
           <post-manage :postData = "activePost"/>
         </div>
       </div>
@@ -76,8 +80,11 @@
 import { mapState } from 'vuex'
 
 export default {
-     fetch({store}) {
+    fetch({store}) {
     return store.dispatch('post/fetchPosts')
+  },
+  created() {
+    this.setInitialActivePost();
   },
   components : {
       
@@ -95,6 +102,20 @@ export default {
    methods : {
      activatePost(post) {
        this.activePost = post
+     },
+     setInitialActivePost() {
+      if (this.posts && this.posts.length > 0) {
+        this.activePost = this.posts[0]
+      } else {
+        this.activePost = null
+      }
+    },
+     deletePost(id) {
+       console.log(id)
+       this.$store.dispatch('post/deletePost',id)
+       .then(() => {
+         this.setInitialActivePost()
+       })
      }
    }
 }
@@ -113,4 +134,11 @@ export default {
     cursor: pointer;
     background-color: #eeeeee;
   }
+
+  .delete-button {
+    display: block;
+    width: 100px;
+    margin-left: auto;
+    margin-right: 0;
+}
 </style>

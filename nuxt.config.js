@@ -13,6 +13,9 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      {src: 'https://cdn.jsdelivr.net/npm/marked/marked.min.js'}
     ]
   },
 
@@ -44,6 +47,10 @@ module.exports = {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
+
+  serverMiddleware : [
+    '~/server/routes/index'
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

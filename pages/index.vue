@@ -15,7 +15,12 @@
                 <h1>Newest Posts</h1>
                 <hr>
               </div>
-              <PostItem v-for="post in posts" :key="post._id" :title="post.title" :subtitle ="post.subtitle" :date="post.createdAt" :isRead="post.isRead"/>
+              <div v-if="posts && posts.length > 0">
+              <PostItem v-for="post in posts" :key="post._id" :title="post.title" :subtitle ="post.subtitle" :date="post.createdAt" :isRead="post.isRead" :id="post._id"/>
+              </div>
+              <div v-else> 
+                No posts
+              </div>
             </div>
             <!-- end of post -->
           </div>
@@ -57,6 +62,9 @@ export default Vue.extend({
   fetch({store}) {
     if(store.getters['post/hasEmptyItem'])
     return store.dispatch('post/fetchPosts')
+  },
+  mounted() {
+    this.$store.dispatch('post/getArchivedItems')
   },
    computed: {
       posts() {
